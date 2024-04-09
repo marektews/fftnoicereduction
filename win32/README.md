@@ -1,0 +1,1 @@
+# Zasoby do kompilacji pod Windows
