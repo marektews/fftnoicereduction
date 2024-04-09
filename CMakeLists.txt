@@ -31,6 +31,13 @@ set_target_properties(appFFTNoiseReduction PROPERTIES
     OUTPUT_NAME ${PROJECT_NAME}
 )
 
+if(WIN32)
+    target_include_directories(appFFTNoiseReduction PRIVATE
+        ${CMAKE_SOURCE_DIR}/win32/ffmpeg/include
+        ${CMAKE_SOURCE_DIR}/win32/fftw
+    )
+endif()
+
 target_link_libraries(appFFTNoiseReduction
     PRIVATE Qt6::Quick
 )
