@@ -14,6 +14,8 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(appFFTNoiseReduction
     app.qrc
     main.cpp
+    AudioFileLoader.h AudioFileLoader.cpp
+    MyAVFormatContext.h MyAVFormatContext.cpp
     FFTRealBuffer.h FFTRealBuffer.cpp
     FFTComplexBuffer.h FFTComplexBuffer.cpp
     FFTPlan.h FFTPlan.cpp
@@ -25,8 +27,7 @@ qt_add_qml_module(appFFTNoiseReduction
     QML_FILES
         Main.qml
     SOURCES
-        AudioFileLoader.h AudioFileLoader.cpp
-
+        AudioFileSourcer.h AudioFileSourcer.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -45,12 +46,23 @@ if(WIN32)
         ${CMAKE_SOURCE_DIR}/win32/ffmpeg/include
         ${CMAKE_SOURCE_DIR}/win32/fftw
     )
+
+    target_link_directories(appFFTNoiseReduction PRIVATE
+        ${CMAKE_SOURCE_DIR}/win32/ffmpeg/lib
+        ${CMAKE_SOURCE_DIR}/win32/fftw
+    )
+    target_link_libraries(appFFTNoiseReduction
+        PRIVATE fftw3-3
+    )
+else()
+    target_link_libraries(appFFTNoiseReduction
+        PRIVATE fftw3
+    )
 endif()
 
 target_link_libraries(appFFTNoiseReduction
     PRIVATE Qt6::Quick
     PRIVATE avformat
-    PRIVATE fftw3
 )
 
 include(GNUInstallDirs)

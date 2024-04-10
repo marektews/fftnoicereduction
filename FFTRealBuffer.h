@@ -24,4 +24,6 @@ private:
     double*     m_pBuffer = nullptr;
 };
 
+Q_DECLARE_METATYPE(FFTRealBuffer::Ptr);
+
 #endif // FFTREALBUFFER_H

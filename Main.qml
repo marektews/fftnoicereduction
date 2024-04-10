@@ -7,8 +7,8 @@ ApplicationWindow {
     visible: true
     title: qsTr("FFT Noice Reduction v1.0")
 
-    AudioFileLoader {
-        id: audioFileLoader
+    AudioFileSourcer {
+        id: audioFileSourcer
     }
 
     Label {
