@@ -1,3 +1,3 @@
 # FFT Noice Reduction
 
-Odszumiacz wekorzystujący FTT i odwrotne FFT.
+Odszumiacz wykorzystujący FTT i odwrotne FFT.
