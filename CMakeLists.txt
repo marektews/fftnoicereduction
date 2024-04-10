@@ -14,6 +14,9 @@ qt_standard_project_setup(REQUIRES 6.5)
 qt_add_executable(appFFTNoiseReduction
     app.qrc
     main.cpp
+    FFTRealBuffer.h FFTRealBuffer.cpp
+    FFTComplexBuffer.h FFTComplexBuffer.cpp
+    FFTPlan.h FFTPlan.cpp
 )
 
 qt_add_qml_module(appFFTNoiseReduction
@@ -23,7 +26,7 @@ qt_add_qml_module(appFFTNoiseReduction
         Main.qml
     SOURCES
         AudioFileLoader.h AudioFileLoader.cpp
-        RESOURCES qtquickcontrols2.conf
+
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -46,6 +49,8 @@ endif()
 
 target_link_libraries(appFFTNoiseReduction
     PRIVATE Qt6::Quick
+    PRIVATE avformat
+    PRIVATE fftw3
 )
 
 include(GNUInstallDirs)
