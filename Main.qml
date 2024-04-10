@@ -1,8 +1,18 @@
 import QtQuick
+import QtQuick.Controls
 
-Window {
+ApplicationWindow {
     width: 640
     height: 480
     visible: true
     title: qsTr("FFT Noice Reduction v1.0")
+
+    AudioFileLoader {
+        id: audioFileLoader
+    }
+
+    Label {
+        anchors.centerIn: parent
+        text: "Fake text"
+    }
 }
