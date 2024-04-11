@@ -16,6 +16,10 @@ qt_add_executable(appFFTNoiseReduction
     main.cpp
     AudioFileLoader.h AudioFileLoader.cpp
     MyAVFormatContext.h MyAVFormatContext.cpp
+    MyAVCodec.h MyAVCodec.cpp
+    MyAVFrame.h MyAVFrame.cpp
+    MyAVPacket.h MyAVPacket.cpp
+    MySwrContext.h MySwrContext.cpp
     FFTRealBuffer.h FFTRealBuffer.cpp
     FFTComplexBuffer.h FFTComplexBuffer.cpp
     FFTPlan.h FFTPlan.cpp
@@ -24,10 +28,10 @@ qt_add_executable(appFFTNoiseReduction
 qt_add_qml_module(appFFTNoiseReduction
     URI FFTNoiseReduction
     VERSION 1.0
-    QML_FILES
-        Main.qml
-    SOURCES
-        AudioFileSourcer.h AudioFileSourcer.cpp
+    QML_FILES Main.qml
+    SOURCES AudioFileSourcer.h AudioFileSourcer.cpp
+    SOURCES WaveShapeView.h WaveShapeView.cpp
+    SOURCES SpectrogramView.h SpectrogramView.cpp
 )
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
@@ -63,6 +67,9 @@ endif()
 target_link_libraries(appFFTNoiseReduction
     PRIVATE Qt6::Quick
     PRIVATE avformat
+    PRIVATE avcodec
+    PRIVATE avutil
+    PRIVATE swresample
 )
 
 include(GNUInstallDirs)

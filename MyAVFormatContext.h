@@ -4,6 +4,7 @@
 #include <QObject>
 extern "C" {
     #include <libavformat/avformat.h>
+    #include <libavutil/avutil.h>
 }
 
 class MyAVFormatContext : public QObject
@@ -14,6 +15,7 @@ public:
     ~MyAVFormatContext();
 
     bool OpenFile(QString filename);
+    AVStream* GetStream(AVMediaType mediaType = AVMEDIA_TYPE_AUDIO);
 
     operator AVFormatContext*() const { return m_pFormat; }
 

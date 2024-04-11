@@ -8,7 +8,7 @@ MyAVFormatContext::MyAVFormatContext(QObject *parent) : QObject{parent}
     {
         qDebug() << Q_FUNC_INFO << "AVFormatContext allocate error";
         return;
-    }   
+    }
 }
 
 /**
@@ -19,6 +19,11 @@ MyAVFormatContext::~MyAVFormatContext()
     if(m_pFormat) avformat_free_context(m_pFormat);
 }
 
+/**
+ * @brief MyAVFormatContext::OpenFile
+ * @param filename
+ * @return
+ */
 bool MyAVFormatContext::OpenFile(QString filename)
 {
     if(avformat_open_input(&m_pFormat, filename.toStdString().c_str(), nullptr, nullptr) != 0)
@@ -33,7 +38,26 @@ bool MyAVFormatContext::OpenFile(QString filename)
         return false;
     }
 
-    ...
-
     return true;
+}
+
+/**
+ * @brief MyAVFormatContext::GetStream
+ * @return
+ */
+AVStream* MyAVFormatContext::GetStream(AVMediaType mediaType)
+{
+    AVStream* pStream = nullptr;
+    for(int i = 0; i < m_pFormat->nb_streams; ++i)
+    {
+        if(m_pFormat->streams[i]->codecpar->codec_type == mediaType)
+        {
+            pStream = m_pFormat->streams[i];
+            break;
+        }
+    }
+    if(pStream == nullptr)
+        qDebug() << Q_FUNC_INFO << "Could not retrieve stream from file:" << m_pFormat->url;
+
+    return pStream;
 }
