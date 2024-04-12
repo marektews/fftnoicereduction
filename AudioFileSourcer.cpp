@@ -21,7 +21,7 @@ AudioFileSourcer::~AudioFileSourcer()
  * @brief AudioFileSourcer::filename
  * @return
  */
-QString AudioFileSourcer::filename() const
+QUrl AudioFileSourcer::filename() const
 {
     return m_filename;
 }
@@ -30,7 +30,7 @@ QString AudioFileSourcer::filename() const
  * @brief AudioFileSourcer::setFilename
  * @param fn
  */
-void AudioFileSourcer::setFilename(QString fn)
+void AudioFileSourcer::setFilename(QUrl fn)
 {
     if(m_filename == fn) return;
     m_filename = fn;
@@ -60,6 +60,7 @@ void AudioFileSourcer::startFileWorker()
         connect(this, &AudioFileSourcer::loadAudioFile, pWorker, &AudioFileLoader::doLoadAudioFile);
         connect(pWorker, &AudioFileLoader::resultReady, this, &AudioFileSourcer::onAudioFileLoaded);
         m_thread.start();
+        emit loadAudioFile(m_filename);
     }
 }
 

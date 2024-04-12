@@ -32,14 +32,56 @@ void MySwrContext::SetChannelCount(int in, int out)
     }
 }
 
-void MySwrContext::SetChannelLayout(unsigned long long in, unsigned long long out)
+/**
+ * @brief MySwrContext::SetChannelLayout
+ * @param in
+ * @param out
+ */
+void MySwrContext::SetChannelLayout(uint64_t in, uint64_t out)
 {
-
+    if(m_pSwr)
+    {
+        av_opt_set_int(m_pSwr, "in_channel_layout", in, 0);
+        av_opt_set_int(m_pSwr, "out_channel_layout", out, 0);
+    }
 }
 
+/**
+ * @brief MySwrContext::SetSampleRate
+ * @param in
+ * @param out
+ */
 void MySwrContext::SetSampleRate(int in, int out)
 {
+    if(m_pSwr)
+    {
+        av_opt_set_int(m_pSwr, "in_sample_rate", in, 0);
+        av_opt_set_int(m_pSwr, "out_sample_rate", out, 0);
+    }
+}
 
+/**
+ * @brief MySwrContext::SetSampleFormat
+ * @param in
+ * @param out
+ */
+void MySwrContext::SetSampleFormat(int in, int out)
+{
+    if(m_pSwr)
+    {
+        av_opt_set_int(m_pSwr, "in_sample_fmt", in, 0);
+        av_opt_set_int(m_pSwr, "out_sample_fmt", out, 0);
+    }
+}
+
+/**
+ * @brief MySwrContext::Initialize
+ * @return
+ */
+bool MySwrContext::Initialize()
+{
+    if(m_pSwr) swr_init(m_pSwr);
+    return IsInitialized();
 }
 
 /**

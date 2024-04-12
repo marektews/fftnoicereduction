@@ -15,9 +15,11 @@ public:
     ~MySwrContext();
 
     void SetChannelCount(int in, int out);
-    void SetChannelLayout(unsigned long long in, unsigned long long out);
+    void SetChannelLayout(uint64_t in, uint64_t out);
     void SetSampleRate(int in, int out);
+    void SetSampleFormat(int in, int out);
 
+    bool Initialize();
     bool IsInitialized() const;
 
 private:

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QUrl>
 #include "FFTRealBuffer.h"
 
 /**
@@ -17,7 +18,7 @@ class AudioFileLoader : public QObject
 public:
     explicit AudioFileLoader(QObject *parent = nullptr);
 
-    void doLoadAudioFile(QString filename);
+    void doLoadAudioFile(QUrl filename);
 
 signals:
     void resultReady(FFTRealBuffer::Ptr pBuffer);

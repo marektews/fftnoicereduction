@@ -16,6 +16,11 @@ public:
     explicit MyAVCodec(AVStream* pStream, QObject *parent = nullptr);
     ~MyAVCodec();
 
+    int GetChannelsCount() const;
+    uint64_t GetChannelLayout() const;
+    int GetSampleRate() const;
+    int GetSampleFormat() const;
+
     operator AVCodecContext*() { return m_pCodecContext; }
 
 private:

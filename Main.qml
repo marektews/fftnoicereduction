@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Controls
+import QtQuick.Dialogs
 
 ApplicationWindow {
     width: 640
@@ -14,5 +15,22 @@ ApplicationWindow {
     Label {
         anchors.centerIn: parent
         text: "Fake text"
+    }
+
+    Button {
+        id: loadButton
+        text: "Open Audio File"
+        onClicked: fileDialog.open()
+    }
+
+    FileDialog {
+        id: fileDialog
+        fileMode: FileDialog.OpenFile
+        nameFilters: ["*.wav files (*.wav)"]
+        onSelectedFileChanged: console.log("File selected:", fileDialog.selectedFile)
+        onAccepted: {
+            console.log("File accepted:", fileDialog.selectedFile)
+            audioFileSourcer.filename = fileDialog.selectedFile
+        }
     }
 }

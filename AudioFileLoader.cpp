@@ -17,13 +17,14 @@ AudioFileLoader::AudioFileLoader(QObject *parent) : QObject{parent}
  * @param filename
  * Wykonywane w oddzielnym wątku ładowanie danych audio ze wskazanego pliku
  *
+ * https://stackoverflow.com/questions/76083629/extracting-audio-samples-using-libavcodec
  * https://rodic.fr/blog/libavcodec-tutorial-decode-audio-file/
  * https://steemit.com/programming/@targodan/decoding-audio-files-with-ffmpeg
  */
-void AudioFileLoader::doLoadAudioFile(QString filename)
+void AudioFileLoader::doLoadAudioFile(QUrl filename)
 {
     MyAVFormatContext avFormat;
-    if(!avFormat.OpenFile(filename))
+    if(!avFormat.OpenFile(filename.toLocalFile()))
         return;
 
     AVStream* pStream = avFormat.GetStream(AVMEDIA_TYPE_AUDIO);
@@ -49,7 +50,6 @@ void AudioFileLoader::doLoadAudioFile(QString filename)
     {
         // decode audio
         int sendResult = avcodec_send_packet(avDecoder, avPacket);
-
         int recvResult = avcodec_receive_frame(avDecoder, avFrame);
 
         // resample frame
