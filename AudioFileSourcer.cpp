@@ -42,9 +42,9 @@ void AudioFileSourcer::setFilename(QUrl fn)
  * @brief AudioFileSourcer::audioRealBuffer
  * @return
  */
-FFTRealBuffer::Ptr AudioFileSourcer::audioRealBuffer() const
+QList<MyAVFrame::Ptr> AudioFileSourcer::audioRealBuffer() const
 {
-    return m_pAudioRealBuffer;
+    return m_lstAudioRealBuffer;
 }
 
 /**
@@ -67,8 +67,8 @@ void AudioFileSourcer::startFileWorker()
 /**
  * @brief AudioFileSourcer::onAudioFileLoaded
  */
-void AudioFileSourcer::onAudioFileLoaded(FFTRealBuffer::Ptr pBuffer)
+void AudioFileSourcer::onAudioFileLoaded(QList<MyAVFrame::Ptr> lst)
 {
-    m_pAudioRealBuffer = pBuffer;
+    m_lstAudioRealBuffer = lst;
     emit audioRealBufferChanged();
 }

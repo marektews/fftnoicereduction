@@ -1,25 +1,22 @@
 #ifndef MYAVCODEC_H
 #define MYAVCODEC_H
 
-#include <QObject>
 extern "C" {
     #include <libavformat/avformat.h>
     #include <libavcodec/avcodec.h>
 }
 
-class MyAVCodec : public QObject
+class MyAVCodec
 {
-    Q_OBJECT
-
 public:
-    explicit MyAVCodec(QObject *parent = nullptr);
-    explicit MyAVCodec(AVStream* pStream, QObject *parent = nullptr);
+    explicit MyAVCodec();
+    explicit MyAVCodec(AVStream* pStream);
     ~MyAVCodec();
 
     int GetChannelsCount() const;
-    uint64_t GetChannelLayout() const;
     int GetSampleRate() const;
-    int GetSampleFormat() const;
+    AVChannelLayout GetChannelLayout() const;
+    AVSampleFormat GetSampleFormat() const;
 
     operator AVCodecContext*() { return m_pCodecContext; }
 

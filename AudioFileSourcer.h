@@ -3,15 +3,16 @@
 
 #include <QObject>
 #include <QThread>
+#include <QList>
 #include <QQmlEngine>
-#include "FFTRealBuffer.h"
+#include "MyAVFrame.h"
 
 class AudioFileSourcer : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
     Q_PROPERTY(QUrl filename READ filename WRITE setFilename NOTIFY filenameChanged FINAL)
-    Q_PROPERTY(FFTRealBuffer::Ptr audioRealBuffer READ audioRealBuffer NOTIFY audioRealBufferChanged FINAL)
+    Q_PROPERTY(QList<MyAVFrame::Ptr> audioRealBuffer READ audioRealBuffer NOTIFY audioRealBufferChanged FINAL)
 
 public:
     explicit AudioFileSourcer(QObject *parent = nullptr);
@@ -20,7 +21,7 @@ public:
     QUrl filename() const;
     void setFilename(QUrl fn);
 
-    FFTRealBuffer::Ptr audioRealBuffer() const;
+    QList<MyAVFrame::Ptr> audioRealBuffer() const;
 
 signals:
     void filenameChanged();
@@ -30,12 +31,11 @@ signals:
 
 private:
     void startFileWorker();
-    void onAudioFileLoaded(FFTRealBuffer::Ptr pBuffer);
+    void onAudioFileLoaded(QList<MyAVFrame::Ptr> lst);
 
 private:
     QUrl m_filename;
-    FFTRealBuffer::Ptr m_pAudioRealBuffer;
-
+    QList<MyAVFrame::Ptr> m_lstAudioRealBuffer;
     QThread m_thread;
 };
 

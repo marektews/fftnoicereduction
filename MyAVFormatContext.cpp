@@ -1,7 +1,7 @@
 #include <QDebug>
 #include "MyAVFormatContext.h"
 
-MyAVFormatContext::MyAVFormatContext(QObject *parent) : QObject{parent}
+MyAVFormatContext::MyAVFormatContext()
 {
     m_pFormat = avformat_alloc_context();
     if(m_pFormat == nullptr)

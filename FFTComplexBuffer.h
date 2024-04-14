@@ -15,7 +15,8 @@ public:
     explicit FFTComplexBuffer(size_t n, QObject *parent = nullptr);
     ~FFTComplexBuffer();
 
-    fftw_complex* ptr() { return m_pBuffer; }
+    fftw_complex* data() { return m_pBuffer; }
+    size_t GetDataSize() const { return m_size; }
 
 signals:
 

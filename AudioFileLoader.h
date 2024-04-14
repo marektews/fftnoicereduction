@@ -4,7 +4,8 @@
 #include <QObject>
 #include <QThread>
 #include <QUrl>
-#include "FFTRealBuffer.h"
+#include <QList>
+#include "MyAVFrame.h"
 
 /**
  * @brief The AudioFileLoader class
@@ -21,7 +22,7 @@ public:
     void doLoadAudioFile(QUrl filename);
 
 signals:
-    void resultReady(FFTRealBuffer::Ptr pBuffer);
+    void resultReady(QList<MyAVFrame::Ptr> pBuffer);
 };
 
 #endif // AUDIOFILELOADER_H

@@ -12,17 +12,6 @@ ApplicationWindow {
         id: audioFileSourcer
     }
 
-    Label {
-        anchors.centerIn: parent
-        text: "Fake text"
-    }
-
-    Button {
-        id: loadButton
-        text: "Open Audio File"
-        onClicked: fileDialog.open()
-    }
-
     FileDialog {
         id: fileDialog
         fileMode: FileDialog.OpenFile
@@ -31,6 +20,30 @@ ApplicationWindow {
         onAccepted: {
             console.log("File accepted:", fileDialog.selectedFile)
             audioFileSourcer.filename = fileDialog.selectedFile
+        }
+    }
+
+    Frame {
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.bottom: parent.verticalCenter
+
+        Button {
+            id: loadButton
+            z: 1
+            text: "Open Audio File"
+            anchors.right: parent.right
+            anchors.top: parent.top
+            anchors.rightMargin: 0
+            anchors.topMargin: 0
+            onClicked: fileDialog.open()
+        }
+
+        WaveShapeView {
+            id: waveShapeView
+            audioRealBuffer: audioFileSourcer.audioRealBuffer
+            anchors.fill: parent
         }
     }
 }

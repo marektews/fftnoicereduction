@@ -1,17 +1,16 @@
 #ifndef MYAVFORMATCONTEXT_H
 #define MYAVFORMATCONTEXT_H
 
-#include <QObject>
 extern "C" {
     #include <libavformat/avformat.h>
     #include <libavutil/avutil.h>
 }
+#include <QString>
 
-class MyAVFormatContext : public QObject
+class MyAVFormatContext
 {
-    Q_OBJECT
 public:
-    explicit MyAVFormatContext(QObject *parent = nullptr);
+    explicit MyAVFormatContext();
     ~MyAVFormatContext();
 
     bool OpenFile(QString filename);

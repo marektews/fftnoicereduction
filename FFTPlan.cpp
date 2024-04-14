@@ -25,7 +25,7 @@ FFTPlan::~FFTPlan()
  */
 bool FFTPlan::Create_R2C_1D(int n, FFTRealBuffer::Ptr in, FFTComplexBuffer::Ptr out, int flags)
 {
-    m_plan = fftw_plan_dft_r2c_1d(n, in->ptr(), out->ptr(), flags);
+    m_plan = fftw_plan_dft_r2c_1d(n, in->data(), out->data(), flags);
     return m_plan != nullptr;
 }
 
@@ -39,7 +39,7 @@ bool FFTPlan::Create_R2C_1D(int n, FFTRealBuffer::Ptr in, FFTComplexBuffer::Ptr 
  */
 bool FFTPlan::Create_C2R_1D(int n, FFTComplexBuffer::Ptr in, FFTRealBuffer::Ptr out, int flags)
 {
-    m_plan = fftw_plan_dft_c2r_1d(n, in->ptr(), out->ptr(), flags);
+    m_plan = fftw_plan_dft_c2r_1d(n, in->data(), out->data(), flags);
     return m_plan != nullptr;
 }
 

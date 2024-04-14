@@ -20,6 +20,7 @@ qt_add_executable(appFFTNoiseReduction
     MyAVFrame.h MyAVFrame.cpp
     MyAVPacket.h MyAVPacket.cpp
     MySwrContext.h MySwrContext.cpp
+    MyAVSamplesBuffer.h MyAVSamplesBuffer.cpp
     FFTRealBuffer.h FFTRealBuffer.cpp
     FFTComplexBuffer.h FFTComplexBuffer.cpp
     FFTPlan.h FFTPlan.cpp
@@ -43,6 +44,10 @@ set_target_properties(appFFTNoiseReduction PROPERTIES
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     MACOSX_BUNDLE TRUE
     WIN32_EXECUTABLE TRUE
+)
+
+add_compile_definitions(appFFTNoiseReduction
+    __STDC_CONSTANT_MACROS
 )
 
 if(WIN32)

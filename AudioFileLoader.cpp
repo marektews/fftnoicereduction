@@ -1,9 +1,11 @@
+#include <QDebug>
 #include "AudioFileLoader.h"
 #include "MyAVFormatContext.h"
 #include "MyAVCodec.h"
 #include "MyAVFrame.h"
 #include "MySwrContext.h"
 #include "MyAVPacket.h"
+#include "MyAVSamplesBuffer.h"
 
 /**
  * @brief AudioFileLoader::AudioFileLoader
@@ -33,30 +35,39 @@ void AudioFileLoader::doLoadAudioFile(QUrl filename)
 
     MyAVCodec avDecoder(pStream);
 
-    MySwrContext resampler;
-    resampler.SetChannelCount(avDecoder.GetChannelsCount(), avDecoder.GetChannelsCount());
-    resampler.SetChannelLayout(avDecoder.GetChannelLayout(), avDecoder.GetChannelLayout());
-    resampler.SetSampleRate(avDecoder.GetSampleRate(), avDecoder.GetSampleRate());
-    resampler.SetSampleFormat(avDecoder.GetSampleFormat(), AV_SAMPLE_FMT_DBL);
-    if(!resampler.Initialize())
+    MySwrContext converter;
+    // converter.SetChannelCount(avDecoder.GetChannelsCount(), avDecoder.GetChannelsCount());
+    converter.SetChannelLayout(avDecoder.GetChannelLayout(), avDecoder.GetChannelLayout());
+    converter.SetSampleRate(avDecoder.GetSampleRate(), avDecoder.GetSampleRate());
+    converter.SetSampleFormat(avDecoder.GetSampleFormat(), AV_SAMPLE_FMT_DBLP);
+    if(!converter.Initialize())
         return;
 
     MyAVPacket avPacket;
-    MyAVFrame avFrame;
-
-    FFTRealBuffer::Ptr pBuffer(new FFTRealBuffer(10));
-
+    MyAVFrame avS16Frame;
+    QList<MyAVFrame::Ptr> result;
     while(av_read_frame(avFormat, avPacket) >= 0)
     {
         // decode audio
         int sendResult = avcodec_send_packet(avDecoder, avPacket);
-        int recvResult = avcodec_receive_frame(avDecoder, avFrame);
+        Q_ASSERT(sendResult == 0);
+        int recvResult = avcodec_receive_frame(avDecoder, avS16Frame);
+        Q_ASSERT(recvResult == 0);
 
         // resample frame
+        MyAVFrame::Ptr pDblFrame(new MyAVFrame());
+        if(pDblFrame)
+        {
+            pDblFrame->SetChannelLayout(avS16Frame.GetChannelLayout());
+            pDblFrame->SetSampleRate(avS16Frame.GetSampleRate());
+            pDblFrame->SetSampleFormat(AV_SAMPLE_FMT_DBLP);
 
+            converter.Convert(avS16Frame, *pDblFrame);
+            result.append(pDblFrame);
+        }
     }
 
-    emit resultReady(pBuffer);
+    emit resultReady(result);
 }
 
 

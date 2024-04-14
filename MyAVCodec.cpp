@@ -5,7 +5,7 @@
  * @brief MyAVCodec::MyAVCodec
  * @param parent
  */
-MyAVCodec::MyAVCodec(QObject* parent): QObject{parent}
+MyAVCodec::MyAVCodec()
 {}
 
 /**
@@ -13,7 +13,7 @@ MyAVCodec::MyAVCodec(QObject* parent): QObject{parent}
  * @param pFormat
  * @param parent
  */
-MyAVCodec::MyAVCodec(AVStream* pStream, QObject *parent) : QObject{parent}
+MyAVCodec::MyAVCodec(AVStream* pStream)
 {
     const AVCodec* pCodec = avcodec_find_decoder(pStream->codecpar->codec_id);
     if(pCodec)
@@ -63,15 +63,6 @@ int MyAVCodec::GetChannelsCount() const
 }
 
 /**
- * @brief MyAVCodec::GetChannelLayout
- * @return
- */
-uint64_t MyAVCodec::GetChannelLayout() const
-{
-    return m_pCodecContext ? m_pCodecContext->ch_layout.u.mask: 0;
-}
-
-/**
  * @brief MyAVCodec::GetSampleRate
  * @return
  */
@@ -81,10 +72,19 @@ int MyAVCodec::GetSampleRate() const
 }
 
 /**
+ * @brief MyAVCodec::GetChannelLayout
+ * @return
+ */
+AVChannelLayout MyAVCodec::GetChannelLayout() const
+{
+    return m_pCodecContext ? m_pCodecContext->ch_layout : AVChannelLayout();
+}
+
+/**
  * @brief MyAVCodec::GetSampleFormat
  * @return
  */
-int MyAVCodec::GetSampleFormat() const
+AVSampleFormat MyAVCodec::GetSampleFormat() const
 {
     return m_pCodecContext ? m_pCodecContext->sample_fmt : AV_SAMPLE_FMT_NONE;
 }

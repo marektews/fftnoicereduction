@@ -1,16 +1,14 @@
 #ifndef MYAVPACKET_H
 #define MYAVPACKET_H
 
-#include <QObject>
 extern "C" {
     #include <libavcodec/avcodec.h>
 }
 
-class MyAVPacket : public QObject
+class MyAVPacket
 {
-    Q_OBJECT
 public:
-    explicit MyAVPacket(QObject *parent = nullptr);
+    explicit MyAVPacket();
     ~MyAVPacket();
 
     operator AVPacket*() { return m_pPacket; }

@@ -4,7 +4,7 @@
  * @brief MyAVPacket::MyAVPacket
  * @param parent
  */
-MyAVPacket::MyAVPacket(QObject *parent) : QObject{parent}
+MyAVPacket::MyAVPacket()
 {
     m_pPacket = av_packet_alloc();
 }

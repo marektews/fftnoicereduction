@@ -1,21 +1,36 @@
 #ifndef MYAVFRAME_H
 #define MYAVFRAME_H
 
-#include <QObject>
+#include <QSharedPointer>
 extern "C" {
     #include <libavcodec/avcodec.h>
 }
 
-class MyAVFrame : public QObject
+class MyAVFrame
 {
-    Q_OBJECT
+    friend class MySwrContext;
+
 public:
-    explicit MyAVFrame(QObject *parent = nullptr);
+    using Ptr = QSharedPointer<MyAVFrame>;
+
+    explicit MyAVFrame();
     ~MyAVFrame();
+
+    AVChannelLayout GetChannelLayout() const;
+    void SetChannelLayout(AVChannelLayout ch_layout);
+
+    int GetSampleRate() const;
+    void SetSampleRate(int sample_rate);
+
+    AVSampleFormat GetSampleFormat() const;
+    void SetSampleFormat(AVSampleFormat format);
+
+    uint8_t** GetSamplesData() const;
+    size_t GetSamplesCount() const;
 
     operator AVFrame*() { return m_pFrame; }
 
-private:
+protected:
     AVFrame* m_pFrame = nullptr;
 };
 
