@@ -44,6 +44,9 @@ QSGNode* WaveShapeView::updatePaintNode(QSGNode* pOldNode, UpdatePaintNodeData* 
         return nullptr;
     }
 
+    if(m_lstAudioRealBuffer.size() == 0)
+        return nullptr;
+
     const QRectF rect = boundingRect();
     const int pointsCount = int(rect.width())*2;
     QSGGeometry *pSGGeometry = nullptr;
@@ -94,14 +97,26 @@ void WaveShapeView::CreateGeometryPoints(QSGGeometry::Point2D* pPoints, const in
     const size_t samplesCount = GetSampleCount();
     const size_t step = samplesCount / size_t(rect.width());
 
-    size_t sampleOffset = 0;
-    const float hoffs = 0.5;
-    for(int i = 0; i < pointsCount/2; ++i)
+    auto itFrame = m_lstAudioRealBuffer.begin();
+    size_t frameBeginSample = 0;
+    for(int i = 0; i < int(rect.width()); ++i)
     {
-        // float y = float(abs(rand() % 50)) / 100.0;
-        float y = GetSample(sampleOffset);
-        sampleOffset += step;
-        y += hoffs;
+        size_t sampleOffset = i * step;
+        MyAVFrame::Ptr pFrame = *itFrame;
+        while(sampleOffset > frameBeginSample + pFrame->GetSamplesCount())
+        {
+            frameBeginSample += pFrame->GetSamplesCount();
+            ++itFrame;
+            pFrame = *itFrame;
+        }
+
+        // offset w zamach aktualnego frame'a
+        size_t offs = sampleOffset - frameBeginSample;
+
+        // wartość słupka
+        double y = std::abs(pFrame->GetSample<double>(0, offs));
+        y += 0.5;
+        // y = std::min<double>(y, 1);
         pPoints[2*i].set(i, y * rect.height());
         pPoints[2*i+1].set(i, (1.0 - y) * rect.height());
     }
@@ -117,24 +132,4 @@ size_t WaveShapeView::GetSampleCount() const
     for(MyAVFrame::Ptr pFrame : m_lstAudioRealBuffer)
         cnt += pFrame->GetSamplesCount();
     return cnt;
-}
-
-/**
- * @brief WaveShapeView::GetSample
- * @param offs
- * @return
- */
-double WaveShapeView::GetSample(size_t offs)
-{
-    size_t n = 0;
-    for(MyAVFrame::Ptr pFrame : m_lstAudioRealBuffer)
-    {
-        size_t samplesCount = pFrame->GetSamplesCount();
-        if(n + samplesCount < offs)
-        {
-            n += samplesCount;
-            continue;
-        }
-    }
-    return 0;
 }

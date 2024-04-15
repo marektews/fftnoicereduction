@@ -44,6 +44,7 @@ ApplicationWindow {
             id: waveShapeView
             audioRealBuffer: audioFileSourcer.audioRealBuffer
             anchors.fill: parent
+            clip: true
         }
     }
 }

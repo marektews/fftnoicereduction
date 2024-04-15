@@ -27,7 +27,6 @@ private:
     void CreateGeometryPoints(QSGGeometry::Point2D *pPoints, const int pointsCount, const QRectF rect);
 
     size_t GetSampleCount() const;
-    double GetSample(size_t offs);
 
 private:
     QList<MyAVFrame::Ptr> m_lstAudioRealBuffer;
